@@ -49,6 +49,7 @@ class Blockchain:
                 return False
             previous_block = block
             block_index +=1
+        return True
 
 #creating web application
 app = Flask(__name__)
@@ -74,6 +75,14 @@ def mine_block():
 def get_chain():
     response = {'chain': blockchain.chain,
                 'length': len(blockchain.chain)}
+    return jsonify(response), 200
+
+@app.route('/is_valid', methods=['GET'])
+def is_valid():
+    if(blockchain.is_chain_valid(blockchain.chain) == True):
+        response = {'message': 'this blockchain is valid'}
+    else:
+        response = {'message': 'this blockchain is not valid'}
     return jsonify(response), 200
 
 app.run(host='0.0.0.0', port = 5000)
